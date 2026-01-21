@@ -1,15 +1,16 @@
+# Stage 1: build the jar
 # Use the official OpenJDK 21.0.2 base image
-FROM eclipse-temurin:11-jre-jammy
-
+FROM maven:3.9.3-eclipse-temurin-17 AS build
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy your application JAR file into the container
-# Replace "your-app-name.jar" with your actual JAR file name
-COPY target/h2b-0.0.1-SNAPSHOT.jar app.jar
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Expose the port your application runs on (default example: 8080)
+# Stage 2: create runtime image
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8081
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
