@@ -1,5 +1,5 @@
 # Use the official OpenJDK 21.0.2 base image
-FROM --platform=linux/amd64 openjdk:21-jdk-slim
+FROM eclipse-temurin:11-jre-jammy
 
 # Set the working directory inside the container
 WORKDIR /app
