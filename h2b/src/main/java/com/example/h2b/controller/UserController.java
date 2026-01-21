@@ -12,7 +12,7 @@ import java.util.List;
 public class UserController {
 
 
-    @Autowired90FRT
+    @Autowired
     private UserService productService;
 
     @GetMapping("/")
